@@ -48,14 +48,14 @@ import 'package:dynamic_treeview/dynamic_treeview.dart';
     onTap               -   Callback when tapped on parent/child widget
 ```
  
-## Configuration
-
+## Configuration parameters
+```
     parentTextStyle                 -   Parent tile TextStyle
     parentPaddingEdgeInsets         -   Parent tile padding
     childrenTextStyle               -   Child tile TextStyle
     childrenPaddingEdgeInsets       -   Children tile padding
-    
-    Check the Config class in dynamic_treeview.dart for details.
+```
+    Check the Config class in [dynamic_treeview.dart](https://github.com/thangmam/dynamic_treeview/blob/master/lib/dynamic_treeview.dart) file for details.
 
 ### Please check [example](https://github.com/thangmam/dynamic_treeview/tree/master/example) for details.
 ## Screenshots
@@ -65,14 +65,11 @@ import 'package:dynamic_treeview/dynamic_treeview.dart';
 #### Drawer
 
 ![alt text](https://github.com/thangmam/dynamic_treeview/raw/master/screenshots/ss2.gif  "Drawer")
-
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+ 
 
 
 ### MIT LICENSE
 
-### I spent weeks of my time developing this package. I really hope this saves you loads of time and i'll be glad to hear your feedback.Let me know if you find any bugs/issues.Thanks.
+### I spent weeks of my time developing this package. I really hope this saves you loads of time and i'd be glad to hear your feedback.Let me know if you find any bugs/issues.Thanks.
  [<img src="https://camo.githubusercontent.com/d5d24e33e2f4b6fe53987419a21b203c03789a8f/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f446f6e6174652d50617950616c2d677265656e2e737667">](https://www.paypal.me/thangmam)
  
