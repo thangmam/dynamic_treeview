@@ -20,7 +20,7 @@ import 'package:flutter/material.dart';
 
 ///Callback when child/parent is tapped . Map data will contain {String 'id',String 'parent_id',String 'title',Map 'extra'}
 
-typedef OnTap(Map data);
+typedef OnTap = Function(Map data);
 
 ///A tree view that supports indefinite category/subcategory lists with horizontal and vertical scrolling
 class DynamicTreeView extends StatefulWidget {
@@ -28,7 +28,7 @@ class DynamicTreeView extends StatefulWidget {
   final List<BaseData> data;
 
   ///Called when DynamicTreeView parent or children gets tapped.
-  ///Map will contain the following keys : 
+  ///Map will contain the following keys :
   ///id , parent_id , title , extra
   final OnTap onTap;
 
