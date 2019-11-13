@@ -56,11 +56,11 @@ import 'package:dynamic_treeview/dynamic_treeview.dart';
 
 ## Screenshots
 #### Full Screen
-![alt text](https://raw.githubusercontent.com/thangmam/smoothratingbar/master/screenshots/fullrating.gif "Full screen")
+![alt text](https://github.com/thangmam/dynamic_treeview/blob/master/screenshots/ss.gif "Full screen")
 
 #### Drawer
 
-![alt text](https://raw.githubusercontent.com/thangmam/smoothratingbar/master/screenshots/halfrating.gif  "Drawer")
+![alt text](https://github.com/thangmam/dynamic_treeview/blob/master/screenshots/ss2.gif  "Drawer")
 
 For help getting started with Flutter, view our 
 [online documentation](https://flutter.dev/docs), which offers tutorials, 
