@@ -1,4 +1,4 @@
-# dynamic_treeview
+# dynamic_treeview - A flutter package
 
 A Dynamic treeview that can be build using dynamic parent/child relationship. It supports indefinite category/subcategory lists with horizontal and vertical scrolling
 
@@ -18,7 +18,10 @@ import 'package:dynamic_treeview/dynamic_treeview.dart';
 ``` 
 ## BaseModel implementation
 ```
-    Since DynamicTreeView is build using data having parent/child relationship, you must create a class model that implements BaseModel and overrides the method like getParentId(), getId() and getTitle() and return appropriate values to make it work. The method getExtraData() has also been added just in-case if any extra data is needed when child/parent is tapped.
+    Since DynamicTreeView is build using data having parent/child relationship, 
+    you must create a class model that implements BaseModel and overrides the method 
+    like getParentId(), getId() and getTitle() and return appropriate values to make it work. 
+    The method getExtraData() has also been added just in-case if any extra data is needed when child/parent is tapped.
 ```
 ## Sample Usage
 
@@ -54,14 +57,22 @@ import 'package:dynamic_treeview/dynamic_treeview.dart';
     
     Check the Config class in dynamic_treeview.dart for details.
 
+### Please check [example](https://github.com/thangmam/dynamic_treeview/tree/master/example) for details.
 ## Screenshots
 #### Full Screen
-![alt text](https://github.com/thangmam/dynamic_treeview/blob/master/screenshots/ss.gif "Full screen")
+![alt text](https://github.com/thangmam/dynamic_treeview/raw/master/screenshots/ss.gif "Full screen")
 
 #### Drawer
 
-![alt text](https://github.com/thangmam/dynamic_treeview/blob/master/screenshots/ss2.gif  "Drawer")
+![alt text](https://github.com/thangmam/dynamic_treeview/raw/master/screenshots/ss2.gif  "Drawer")
 
 For help getting started with Flutter, view our 
 [online documentation](https://flutter.dev/docs), which offers tutorials, 
 samples, guidance on mobile development, and a full API reference.
+
+
+### MIT LICENSE
+
+### I spent weeks of my time developing this package. I really hope this saves you loads of time and i'll be glad to hear your feedback.Let me know if you find any bugs/issues.Thanks.
+ [<img src="https://camo.githubusercontent.com/d5d24e33e2f4b6fe53987419a21b203c03789a8f/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f446f6e6174652d50617950616c2d677265656e2e737667">](https://www.paypal.me/thangmam)
+ 
