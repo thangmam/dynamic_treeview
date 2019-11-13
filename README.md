@@ -8,7 +8,7 @@ In your flutter project add the dependency:
 ```
     dependencies:
         ...
-        dynamic_treeview: 1.0.0
+        dynamic_treeview: 1.0.0+1
 ```
 
 ## Import package
