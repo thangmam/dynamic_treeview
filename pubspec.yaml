@@ -1,8 +1,7 @@
 name: dynamic_treeview
 description: A dynamic tree view.
 version: 1.0.0
-author: Thangmam(infimatet@gmail.com)
-homepage:
+homepage: https://github.com/thangmam
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
