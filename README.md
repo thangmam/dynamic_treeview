@@ -55,9 +55,10 @@ import 'package:dynamic_treeview/dynamic_treeview.dart';
     childrenTextStyle               -   Child tile TextStyle
     childrenPaddingEdgeInsets       -   Children tile padding
 ```
-    Check the Config class in [dynamic_treeview.dart](https://github.com/thangmam/dynamic_treeview/blob/master/lib/dynamic_treeview.dart) file for details.
+Check the Config class in [dynamic_treeview.dart](https://github.com/thangmam/dynamic_treeview/blob/master/lib/dynamic_treeview.dart) file for details.
 
-### Please check [example](https://github.com/thangmam/dynamic_treeview/tree/master/example) for details.
+## Sample code
+Please check [example](https://github.com/thangmam/dynamic_treeview/tree/master/example) for details.
 ## Screenshots
 #### Full Screen
 ![alt text](https://github.com/thangmam/dynamic_treeview/raw/master/screenshots/ss.gif "Full screen")
