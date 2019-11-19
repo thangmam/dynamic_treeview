@@ -1,7 +1,7 @@
 name: dynamic_treeview
 description: A Dynamic treeview that can be build using dynamic parent/child relationship. It supports indefinite category/subcategory lists with horizontal and vertical scrolling
-version: 1.0.0+1
-homepage: https://github.com/thangmam
+version: 1.0.0+2
+homepage: https://github.com/thangmam/dynamic_treeview
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
