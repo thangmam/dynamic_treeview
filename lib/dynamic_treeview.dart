@@ -135,7 +135,7 @@ class _DynamicTreeViewOriState extends State<DynamicTreeView> {
               'id': '${k.getId()}',
               'parent_id': '${k.getParentId()}',
               'title': '${k.getTitle()}',
-              'extra': '${k.getExtraData()}'
+              'extra': k.getExtraData()
             });
           },
           contentPadding: widget.config.childrenPaddingEdgeInsets,
