@@ -11,45 +11,44 @@ import 'package:flutter/material.dart';
 //the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 //to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-//The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-//WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-//COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-//ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+// WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+// COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-///Callback when child/parent is tapped . Map data will contain {String 'id',String 'parent_id',String 'title',Map 'extra'}
-
+/// Callback when child/parent is tapped . Map data will contain {String 'id',String 'parent_id',String 'title',Map 'extra'}
 typedef OnTap = Function(Map data);
 
-///A tree view that supports indefinite category/subcategory lists with horizontal and vertical scrolling
+/// A tree view that supports indefinite category/subcategory lists with horizontal and vertical scrolling
 class DynamicTreeView extends StatefulWidget {
-  ///DynamicTreeView will be build based on this.Create a model class and implement [BaseData]
+  /// DynamicTreeView will be build based on this.Create a model class and implement [BaseData]
   final List<BaseData> data;
 
-  ///Called when DynamicTreeView parent or children gets tapped.
-  ///Map will contain the following keys :
-  ///id , parent_id , title , extra
-  final OnTap onTap;
+  /// Called when DynamicTreeView parent or children gets tapped.
+  /// Map will contain the following keys :
+  /// id , parent_id , title , extra
+  final OnTap? onTap;
 
-  ///The width of DynamicTreeView
+  /// The width of DynamicTreeView
   final double width;
 
-  ///Configuration object for [DynamicTreeView]
+  /// Configuration object for [DynamicTreeView]
   final Config config;
   DynamicTreeView({
-    @required this.data,
+    required this.data,
     this.config = const Config(),
     this.onTap,
     this.width = 220.0,
-  }) : assert(data != null);
+  });
 
   @override
   _DynamicTreeViewOriState createState() => _DynamicTreeViewOriState();
 }
 
 class _DynamicTreeViewOriState extends State<DynamicTreeView> {
-  List<ParentWidget> treeView;
+  List<ParentWidget>? treeView;
   ChildTapListener _childTapListener = ChildTapListener(null);
 
   @override
@@ -62,7 +61,7 @@ class _DynamicTreeViewOriState extends State<DynamicTreeView> {
   void childTapListener() {
     if (widget.onTap != null) {
       var k = _childTapListener.getMapValue();
-      widget.onTap(k);
+      widget.onTap!(k);
     }
   }
 
@@ -85,17 +84,17 @@ class _DynamicTreeViewOriState extends State<DynamicTreeView> {
         .toList()
           ..sort((i, j) => i.compareTo(j));
 
-    var widgets = List<ParentWidget>();
+    var widgets = <ParentWidget>[];
     k.forEach((f) {
       ParentWidget p = buildWidget(f, null);
-      if (p != null) widgets.add(p);
+      widgets.add(p);
     });
     setState(() {
       treeView = widgets;
     });
   }
 
-  ParentWidget buildWidget(String parentId, String name) {
+  ParentWidget buildWidget(String parentId, String? name) {
     var data = _getChildrenFromParent(parentId);
     BaseData d =
         widget.data.firstWhere((d) => d.getId() == parentId.toString());
@@ -119,11 +118,11 @@ class _DynamicTreeViewOriState extends State<DynamicTreeView> {
   }
 
   _buildChildren(List<BaseData> data) {
-    var cW = List<Widget>();
+    var cW = <Widget>[];
     for (var k in data) {
       var c = _getChildrenFromParent(k.getId());
-      if ((c?.length ?? 0) > 0) {
-        //has children
+      if ((c.length) > 0) {
+        // has children
         var name = widget.data
             .firstWhere((d) => d.getId() == k.getId().toString())
             .getTitle();
@@ -131,7 +130,7 @@ class _DynamicTreeViewOriState extends State<DynamicTreeView> {
       } else {
         cW.add(ListTile(
           onTap: () {
-            widget?.onTap({
+            widget.onTap!({
               'id': '${k.getId()}',
               'parent_id': '${k.getParentId()}',
               'title': '${k.getTitle()}',
@@ -164,7 +163,7 @@ class _DynamicTreeViewOriState extends State<DynamicTreeView> {
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: treeView,
+                  children: treeView!,
                 ),
                 physics: BouncingScrollPhysics(),
               ),
@@ -177,10 +176,15 @@ class _DynamicTreeViewOriState extends State<DynamicTreeView> {
 }
 
 class ChildWidget extends StatefulWidget {
+  ChildWidget({
+    required this.children,
+    required this.config,
+    this.shouldExpand = false,
+  });
+
   final List<Widget> children;
-  final bool shouldExpand;
   final Config config;
-  ChildWidget({this.children, this.config, this.shouldExpand = false});
+  final bool shouldExpand;
 
   @override
   _ChildWidgetState createState() => _ChildWidgetState();
@@ -188,8 +192,8 @@ class ChildWidget extends StatefulWidget {
 
 class _ChildWidgetState extends State<ChildWidget>
     with SingleTickerProviderStateMixin {
-  Animation<double> sizeAnimation;
-  AnimationController expandController;
+  late Animation<double> sizeAnimation;
+  late AnimationController expandController;
 
   @override
   void didUpdateWidget(ChildWidget oldWidget) {
@@ -218,10 +222,11 @@ class _ChildWidgetState extends State<ChildWidget>
         AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     Animation curve =
         CurvedAnimation(parent: expandController, curve: Curves.fastOutSlowIn);
-    sizeAnimation = Tween(begin: 0.0, end: 1.0).animate(curve)
-      ..addListener(() {
-        setState(() {});
-      });
+    sizeAnimation =
+        Tween(begin: 0.0, end: 1.0).animate(curve as Animation<double>)
+          ..addListener(() {
+            setState(() {});
+          });
   }
 
   @override
@@ -249,17 +254,18 @@ class _ChildWidgetState extends State<ChildWidget>
 }
 
 class ParentWidget extends StatefulWidget {
+  ParentWidget({
+    Key? key,
+    required this.children,
+    required this.baseData,
+    required this.config,
+    this.onTap,
+  }) : super(key: key);
+
   final List<Widget> children;
   final BaseData baseData;
   final Config config;
-  final OnTap onTap;
-  ParentWidget({
-    this.baseData,
-    this.onTap,
-    this.children,
-    this.config,
-    Key key,
-  }) : super(key: key);
+  final OnTap? onTap;
 
   @override
   _ParentWidgetState createState() => _ParentWidgetState();
@@ -268,8 +274,8 @@ class ParentWidget extends StatefulWidget {
 class _ParentWidgetState extends State<ParentWidget>
     with SingleTickerProviderStateMixin {
   bool shouldExpand = false;
-  Animation<double> sizeAnimation;
-  AnimationController expandController;
+  late Animation<double> sizeAnimation;
+  late AnimationController expandController;
 
   @override
   void dispose() {
@@ -288,10 +294,11 @@ class _ParentWidgetState extends State<ParentWidget>
         AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     Animation curve =
         CurvedAnimation(parent: expandController, curve: Curves.fastOutSlowIn);
-    sizeAnimation = Tween(begin: 0.0, end: 0.5).animate(curve)
-      ..addListener(() {
-        setState(() {});
-      });
+    sizeAnimation =
+        Tween(begin: 0.0, end: 0.5).animate(curve as Animation<double>)
+          ..addListener(() {
+            setState(() {});
+          });
   }
 
   @override
@@ -301,12 +308,14 @@ class _ParentWidgetState extends State<ParentWidget>
       children: <Widget>[
         ListTile(
           onTap: () {
-            var map = Map<String, dynamic>();
+            final map = Map<String, dynamic>();
             map['id'] = widget.baseData.getId();
             map['parent_id'] = widget.baseData.getParentId();
             map['title'] = widget.baseData.getTitle();
             map['extra'] = widget.baseData.getExtraData();
-            if (widget.onTap != null) widget.onTap(map);
+            if (widget.onTap != null) {
+              widget.onTap!(map);
+            }
           },
           title: Text(widget.baseData.getTitle(),
               style: widget.config.parentTextStyle),
@@ -338,31 +347,24 @@ class _ParentWidgetState extends State<ParentWidget>
   }
 }
 
-///A singleton Child tap listener
-class ChildTapListener extends ValueNotifier<Map<String, dynamic>> {
-  /* static final ChildTapListener _instance = ChildTapListener.internal();
+/// A singleton child tap listener.
+class ChildTapListener extends ValueNotifier<Map<String, dynamic>?> {
+  Map<String, dynamic>? mapValue;
 
-  factory ChildTapListener() => _instance;
-
-  ChildTapListener.internal() : super(null); */
-  Map<String, dynamic> mapValue;
-
-  ChildTapListener(Map<String, dynamic> value) : super(value);
-
-  // ChildTapListener() : super(null);
+  ChildTapListener(Map<String, dynamic>? value) : super(value);
 
   void addMapValue(Map map) {
-    this.mapValue = map;
+    this.mapValue = map as Map<String, dynamic>?;
     notifyListeners();
   }
 
-  Map getMapValue() {
+  Map? getMapValue() {
     return this.mapValue;
   }
 }
 
-///Dynamic TreeView will construct treeview based on parent-child relationship.So, its important to
-///override getParentId() and getId() with proper values.
+/// Dynamic TreeView will construct treeview based on parent-child relationship.
+/// So, it's important to override getParentId() and getId() with proper values.
 abstract class BaseData {
   ///id of this data
   String getId();
@@ -383,11 +385,13 @@ class Config {
   final EdgeInsets childrenPaddingEdgeInsets;
   final EdgeInsets parentPaddingEdgeInsets;
 
-  ///Animated icon when tile collapse/expand
+  /// Animated icon when tile collapse/expand.
   final Widget arrowIcon;
 
-  ///the rootid of a treeview.This is needed to fetch all the immediate child of root
-  ///Default is 1
+  /// The rootid of a treeview. This is needed to fetch all the immediate child
+  /// of root.
+  ///
+  /// Default is 1.
   final String rootId;
 
   const Config(

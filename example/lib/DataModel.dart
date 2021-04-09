@@ -1,13 +1,20 @@
 import 'package:dynamic_treeview/dynamic_treeview.dart';
 
 class DataModel implements BaseData {
+  DataModel({
+    required this.id,
+    required this.parentId,
+    required this.name,
+    required this.extras,
+  });
+
   final int id;
   final int parentId;
-  String name;
+  final String name;
 
   ///Any extra data you want to get when tapped on children
-  Map<String, dynamic> extras;
-  DataModel({this.id, this.parentId, this.name, this.extras});
+  final Map<String, dynamic> extras;
+
   @override
   String getId() {
     return this.id.toString();

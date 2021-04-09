@@ -2,8 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ScreenTwo extends StatelessWidget {
+  ScreenTwo({
+    required this.data,
+  });
+
   final Map data;
-  ScreenTwo({this.data});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
