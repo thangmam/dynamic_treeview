@@ -49,27 +49,11 @@ class DynamicTreeView extends StatefulWidget {
 
 class _DynamicTreeViewOriState extends State<DynamicTreeView> {
   List<ParentWidget>? treeView;
-  ChildTapListener _childTapListener = ChildTapListener(null);
 
   @override
   void initState() {
     _buildTreeView();
-    _childTapListener.addListener(childTapListener);
     super.initState();
-  }
-
-  void childTapListener() {
-    if (widget.onTap != null) {
-      var k = _childTapListener.getMapValue();
-      widget.onTap!(k);
-    }
-  }
-
-  @override
-  void dispose() {
-    _childTapListener.removeListener(childTapListener);
-    _childTapListener.dispose();
-    super.dispose();
   }
 
   _buildTreeView() {
@@ -344,22 +328,6 @@ class _ParentWidgetState extends State<ParentWidget>
         )
       ],
     );
-  }
-}
-
-/// A singleton child tap listener.
-class ChildTapListener extends ValueNotifier<Map<String, dynamic>?> {
-  Map<String, dynamic>? mapValue;
-
-  ChildTapListener(Map<String, dynamic>? value) : super(value);
-
-  void addMapValue(Map map) {
-    this.mapValue = map as Map<String, dynamic>?;
-    notifyListeners();
-  }
-
-  Map? getMapValue() {
-    return this.mapValue;
   }
 }
 
