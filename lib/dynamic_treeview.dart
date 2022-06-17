@@ -20,7 +20,7 @@ import 'package:flutter/material.dart';
 
 ///Callback when child/parent is tapped . Map data will contain {String 'id',String 'parent_id',String 'title',Map 'extra'}
 
-typedef OnTap = Function(Map data);
+typedef OnTap = Function(Map? data);
 
 ///A tree view that supports indefinite category/subcategory lists with horizontal and vertical scrolling
 class DynamicTreeView extends StatefulWidget {
@@ -30,7 +30,7 @@ class DynamicTreeView extends StatefulWidget {
   ///Called when DynamicTreeView parent or children gets tapped.
   ///Map will contain the following keys :
   ///id , parent_id , title , extra
-  final OnTap onTap;
+  final OnTap? onTap;
 
   ///The width of DynamicTreeView
   final double width;
@@ -38,18 +38,18 @@ class DynamicTreeView extends StatefulWidget {
   ///Configuration object for [DynamicTreeView]
   final Config config;
   DynamicTreeView({
-    @required this.data,
+    required this.data,
     this.config = const Config(),
     this.onTap,
     this.width = 220.0,
-  }) : assert(data != null);
+  });
 
   @override
   _DynamicTreeViewOriState createState() => _DynamicTreeViewOriState();
 }
 
 class _DynamicTreeViewOriState extends State<DynamicTreeView> {
-  List<ParentWidget> treeView;
+  List<ParentWidget>? treeView;
   ChildTapListener _childTapListener = ChildTapListener(null);
 
   @override
@@ -62,7 +62,7 @@ class _DynamicTreeViewOriState extends State<DynamicTreeView> {
   void childTapListener() {
     if (widget.onTap != null) {
       var k = _childTapListener.getMapValue();
-      widget.onTap(k);
+      widget.onTap!(k);
     }
   }
 
@@ -83,19 +83,19 @@ class _DynamicTreeViewOriState extends State<DynamicTreeView> {
         })
         .toSet()
         .toList()
-          ..sort((i, j) => i.compareTo(j));
+      ..sort((i, j) => i.compareTo(j));
 
-    var widgets = List<ParentWidget>();
+    var widgets = <ParentWidget>[];
     k.forEach((f) {
       ParentWidget p = buildWidget(f, null);
-      if (p != null) widgets.add(p);
+      widgets.add(p);
     });
     setState(() {
       treeView = widgets;
     });
   }
 
-  ParentWidget buildWidget(String parentId, String name) {
+  ParentWidget buildWidget(String parentId, String? name) {
     var data = _getChildrenFromParent(parentId);
     BaseData d =
         widget.data.firstWhere((d) => d.getId() == parentId.toString());
@@ -119,10 +119,10 @@ class _DynamicTreeViewOriState extends State<DynamicTreeView> {
   }
 
   _buildChildren(List<BaseData> data) {
-    var cW = List<Widget>();
+    var cW = <Widget>[];
     for (var k in data) {
       var c = _getChildrenFromParent(k.getId());
-      if ((c?.length ?? 0) > 0) {
+      if ((c.length) > 0) {
         //has children
         var name = widget.data
             .firstWhere((d) => d.getId() == k.getId().toString())
@@ -131,7 +131,7 @@ class _DynamicTreeViewOriState extends State<DynamicTreeView> {
       } else {
         cW.add(ListTile(
           onTap: () {
-            widget?.onTap({
+            widget.onTap!({
               'id': '${k.getId()}',
               'parent_id': '${k.getParentId()}',
               'title': '${k.getTitle()}',
@@ -164,7 +164,7 @@ class _DynamicTreeViewOriState extends State<DynamicTreeView> {
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: treeView,
+                  children: treeView!,
                 ),
                 physics: BouncingScrollPhysics(),
               ),
@@ -177,9 +177,9 @@ class _DynamicTreeViewOriState extends State<DynamicTreeView> {
 }
 
 class ChildWidget extends StatefulWidget {
-  final List<Widget> children;
+  final List<Widget>? children;
   final bool shouldExpand;
-  final Config config;
+  final Config? config;
   ChildWidget({this.children, this.config, this.shouldExpand = false});
 
   @override
@@ -188,8 +188,8 @@ class ChildWidget extends StatefulWidget {
 
 class _ChildWidgetState extends State<ChildWidget>
     with SingleTickerProviderStateMixin {
-  Animation<double> sizeAnimation;
-  AnimationController expandController;
+  late Animation<double> sizeAnimation;
+  late AnimationController expandController;
 
   @override
   void didUpdateWidget(ChildWidget oldWidget) {
@@ -218,10 +218,11 @@ class _ChildWidgetState extends State<ChildWidget>
         AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     Animation curve =
         CurvedAnimation(parent: expandController, curve: Curves.fastOutSlowIn);
-    sizeAnimation = Tween(begin: 0.0, end: 1.0).animate(curve)
-      ..addListener(() {
-        setState(() {});
-      });
+    sizeAnimation =
+        Tween(begin: 0.0, end: 1.0).animate(curve as Animation<double>)
+          ..addListener(() {
+            setState(() {});
+          });
   }
 
   @override
@@ -236,12 +237,12 @@ class _ChildWidgetState extends State<ChildWidget>
   }
 
   _buildChildren() {
-    return widget.children.map((c) {
+    return widget.children!.map((c) {
       // return c;
       return Align(
           alignment: Alignment.centerLeft,
           child: Padding(
-            padding: widget.config.childrenPaddingEdgeInsets,
+            padding: widget.config!.childrenPaddingEdgeInsets,
             child: c,
           ));
     }).toList();
@@ -249,16 +250,16 @@ class _ChildWidgetState extends State<ChildWidget>
 }
 
 class ParentWidget extends StatefulWidget {
-  final List<Widget> children;
-  final BaseData baseData;
-  final Config config;
-  final OnTap onTap;
+  final List<Widget>? children;
+  final BaseData? baseData;
+  final Config? config;
+  final OnTap? onTap;
   ParentWidget({
     this.baseData,
     this.onTap,
     this.children,
     this.config,
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -268,8 +269,8 @@ class ParentWidget extends StatefulWidget {
 class _ParentWidgetState extends State<ParentWidget>
     with SingleTickerProviderStateMixin {
   bool shouldExpand = false;
-  Animation<double> sizeAnimation;
-  AnimationController expandController;
+  late Animation<double> sizeAnimation;
+  late AnimationController expandController;
 
   @override
   void dispose() {
@@ -288,10 +289,11 @@ class _ParentWidgetState extends State<ParentWidget>
         AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     Animation curve =
         CurvedAnimation(parent: expandController, curve: Curves.fastOutSlowIn);
-    sizeAnimation = Tween(begin: 0.0, end: 0.5).animate(curve)
-      ..addListener(() {
-        setState(() {});
-      });
+    sizeAnimation =
+        Tween(begin: 0.0, end: 0.5).animate(curve as Animation<double>)
+          ..addListener(() {
+            setState(() {});
+          });
   }
 
   @override
@@ -302,15 +304,15 @@ class _ParentWidgetState extends State<ParentWidget>
         ListTile(
           onTap: () {
             var map = Map<String, dynamic>();
-            map['id'] = widget.baseData.getId();
-            map['parent_id'] = widget.baseData.getParentId();
-            map['title'] = widget.baseData.getTitle();
-            map['extra'] = widget.baseData.getExtraData();
-            if (widget.onTap != null) widget.onTap(map);
+            map['id'] = widget.baseData!.getId();
+            map['parent_id'] = widget.baseData!.getParentId();
+            map['title'] = widget.baseData!.getTitle();
+            map['extra'] = widget.baseData!.getExtraData();
+            if (widget.onTap != null) widget.onTap!(map);
           },
-          title: Text(widget.baseData.getTitle(),
-              style: widget.config.parentTextStyle),
-          contentPadding: widget.config.parentPaddingEdgeInsets,
+          title: Text(widget.baseData!.getTitle(),
+              style: widget.config!.parentTextStyle),
+          contentPadding: widget.config!.parentPaddingEdgeInsets,
           trailing: IconButton(
             onPressed: () {
               setState(() {
@@ -324,7 +326,7 @@ class _ParentWidgetState extends State<ParentWidget>
             },
             icon: RotationTransition(
               turns: sizeAnimation,
-              child: widget.config.arrowIcon,
+              child: widget.config!.arrowIcon,
             ),
           ),
         ),
@@ -339,24 +341,24 @@ class _ParentWidgetState extends State<ParentWidget>
 }
 
 ///A singleton Child tap listener
-class ChildTapListener extends ValueNotifier<Map<String, dynamic>> {
+class ChildTapListener extends ValueNotifier<Map<String, dynamic>?> {
   /* static final ChildTapListener _instance = ChildTapListener.internal();
 
   factory ChildTapListener() => _instance;
 
   ChildTapListener.internal() : super(null); */
-  Map<String, dynamic> mapValue;
+  Map<String, dynamic>? mapValue;
 
-  ChildTapListener(Map<String, dynamic> value) : super(value);
+  ChildTapListener(Map<String, dynamic>? value) : super(value);
 
   // ChildTapListener() : super(null);
 
   void addMapValue(Map map) {
-    this.mapValue = map;
+    this.mapValue = map as Map<String, dynamic>?;
     notifyListeners();
   }
 
-  Map getMapValue() {
+  Map? getMapValue() {
     return this.mapValue;
   }
 }
