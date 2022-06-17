@@ -1,7 +1,7 @@
+import 'package:dynamic_treeview/dynamic_treeview.dart';
 import 'package:example/ScreenOne.dart';
 import 'package:example/ScreenTwo.dart';
 import 'package:flutter/material.dart';
-import 'package:dynamic_treeview/dynamic_treeview.dart';
 
 void main() => runApp(MyApp());
 
@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
                 parentPaddingEdgeInsets:
                     EdgeInsets.only(left: 16, top: 0, bottom: 0)),
-            onChildTap: (m) {
+            onTap: (m) {
               print("onChildTap -> $m");
               Navigator.push(
                   context,
@@ -60,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Column(
           children: <Widget>[
-            RaisedButton(
+            ElevatedButton(
               onPressed: () {
                 Navigator.push(
                     context, MaterialPageRoute(builder: (ctx) => ScreenOne()));
